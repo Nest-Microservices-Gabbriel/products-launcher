@@ -27,33 +27,35 @@ services:
     environment:
       - PORT=3004
       - NATS_SERVERS=nats://nats-server:4222
-      - DATABASE_URL=mongodb://root:12345@auth-db:27017/AuthDB?authSource=admin
+      #- DATABASE_URL=mongodb://root:12345@auth-db:27017/AuthDB?authSource=admin
+      - DATABASE_URL=mongodb+srv://gabriel-auth-ms:hz3TeQkdrsoZ94Ov@auth-ms.0vngv.mongodb.net/AuthDb
+
       - JWT_SECRET=${JWT_SECRET}
 
-  auth-db:
-    build: ./mongodb_rs
-    restart: always
-    volumes:
-      - ./auth-ms/mongo:/data/db
-    ports:
-      - 27017:27017
-    environment:
-      - MONGO_INITDB_ROOT_USERNAME=root
-      - MONGO_INITDB_ROOT_PASSWORD=12345
-      - MONGO_INITDB_DATABASE=AuthDB
-      - MONGO_REPLICA_HOST=auth-db
-      - MONGO_REPLICA_PORT=27017
+  # auth-db:
+  #   build: ./mongodb_rs
+  #   restart: always
+  #   volumes:
+  #     - ./auth-ms/mongo:/data/db
+  #   ports:
+  #     - 27017:27017
+  #   environment:
+  #     - MONGO_INITDB_ROOT_USERNAME=root
+  #     - MONGO_INITDB_ROOT_PASSWORD=12345
+  #     - MONGO_INITDB_DATABASE=AuthDB
+  #     - MONGO_REPLICA_HOST=auth-db
+  #     - MONGO_REPLICA_PORT=27017
 
-  mongo-express:
-    image: mongo-express:0.54.0
-    restart: always
-    container_name: mongo-express
-    ports:
-      - 8081:8081
-    environment:
-      - ME_CONFIG_MONGODB_ADMINUSERNAME=root
-      - ME_CONFIG_MONGODB_ADMINPASSWORD=12345
-      - ME_CONFIG_MONGODB_SERVER=auth-db
+  # mongo-express:
+  #   image: mongo-express:0.54.0
+  #   restart: always
+  #   container_name: mongo-express
+  #   ports:
+  #     - 8081:8081
+  #   environment:
+  #     - ME_CONFIG_MONGODB_ADMINUSERNAME=root
+  #     - ME_CONFIG_MONGODB_ADMINPASSWORD=12345
+  #     - ME_CONFIG_MONGODB_SERVER=auth-db
 
   products-ms:
     build: ./products-ms
@@ -67,30 +69,30 @@ services:
 
   # Orders MS
   orders-ms:
-    depends_on:
-      - orders-db
+    #depends_on:
+    #  - orders-db
     build: ./orders-ms
     volumes:
       - ./orders-ms/src:/usr/src/app/src
     command: npm run start:dev
     environment:
       - PORT=3002
-      - DATABASE_URL=postgresql://postgres:123456@orders-db:5432/ordersdb?schema=public
+      - DATABASE_URL=postgresql://orders-db_owner:3TZbm5XctYEI@ep-raspy-frost-a43w5pp1.us-east-1.aws.neon.tech/orders-db?sslmode=require
       - NATS_SERVERS=nats://nats-server:4222
 
   # Orders DB
-  orders-db:
-    container_name: orders_database
-    image: postgres:16.2
-    restart: always
-    volumes:
-      - ./orders-ms/postgres:/var/lib/postgresql/data
-    ports:
-      - 5432:5432
-    environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=123456
-      - POSTGRES_DB=ordersdb
+  # orders-db:
+  #   container_name: orders_database
+  #   image: postgres:16.2
+  #   restart: always
+  #   volumes:
+  #     - ./orders-ms/postgres:/var/lib/postgresql/data
+  #   ports:
+  #     - 5432:5432
+  #   environment:
+  #     - POSTGRES_USER=postgres
+  #     - POSTGRES_PASSWORD=123456
+  #     - POSTGRES_DB=ordersdb
 
   # =====================================
   # Payments Microservice
