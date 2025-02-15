@@ -28,7 +28,7 @@ services:
       - PORT=3004
       - NATS_SERVERS=nats://nats-server:4222
       #- DATABASE_URL=mongodb://root:12345@auth-db:27017/AuthDB?authSource=admin
-      - DATABASE_URL=mongodb+srv://gabriel-auth-ms:hz3TeQkdrsoZ94Ov@auth-ms.0vngv.mongodb.net/AuthDb
+      - DATABASE_URL=${AUTH_DATABASE_URL}
 
       - JWT_SECRET=${JWT_SECRET}
 
@@ -77,7 +77,7 @@ services:
     command: npm run start:dev
     environment:
       - PORT=3002
-      - DATABASE_URL=postgresql://orders-db_owner:3TZbm5XctYEI@ep-raspy-frost-a43w5pp1.us-east-1.aws.neon.tech/orders-db?sslmode=require
+      - DATABASE_URL=${ORDERS_DATABASE_URL}
       - NATS_SERVERS=nats://nats-server:4222
 
   # Orders DB
