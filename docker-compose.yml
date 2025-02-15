@@ -28,7 +28,11 @@ services:
       - PORT=3004
       - NATS_SERVERS=nats://nats-server:4222
       #- DATABASE_URL=mongodb://root:12345@auth-db:27017/AuthDB?authSource=admin
+<<<<<<< HEAD
       - DATABASE_URL=${AUTH_DATABASE_URL}
+=======
+      - DATABASE_URL=mongodb+srv://gabriel-auth-ms:nUGCZurzeAsbGN1M@auth-ms.0vngv.mongodb.net/AuthDb
+>>>>>>> e820545f83184fb14835499a678f1f41027e6290
 
       - JWT_SECRET=${JWT_SECRET}
 
